@@ -20,7 +20,16 @@ const server = http.createServer(app);
 
 const PORT = process.env.PORT || 5000;
 
-const io = new Server(server);
+
+app.get('/health', (req, res) => res.status(200).send('OK'));
+
+
+const io = new Server(server, {
+  transports: ['websocket', 'polling'],
+  cors: { origin: '*' },
+  pingInterval: 15000,
+  pingTimeout: 30000
+});
 
 const userSocketMap = {};
 
